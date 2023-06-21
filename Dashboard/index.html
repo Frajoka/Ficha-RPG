@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="refresh" content="30"/>
+		<link rel="shortcut icon" href="../assets/favicon-dm.jpg" type="image/jpeg"/>
+		<style>
+			h4,p{
+				font-size:150%;
+			}
+			ul {
+				list-style-type: none;
+				transform:translateX(-30px);
+			}
+			li p{
+				margin:0px;
+			}
+			#players{
+				display:flex;
+				flex-direction:column;
+			}
+			.player{
+				border: 1px solid #000;
+				width:96vw;
+			}
+			.player span{
+				display:inline-block;
+				width:12vw;
+				height:12vw;
+				background-size:12vw 12vw;
+				text-align:center;
+			}
+			.player span p{
+				display:block;
+			}
+			.pic{
+				display: inline-block;
+				margin:2px;
+				width: 20vw;
+				border: 1px solid #000;
+				border-radius: 4px;
+			}
+			.nome_info{
+				display:inline-block;
+			}
+			.hp_div{
+				background-image:url('../assets/heart.png');
+			}
+			.ca_div{
+				background-image:url('../assets/shield.png')
+			}
+			.vida, .armadura{
+				display:inline;
+			}
+			.atributos, .inventario, .magias{
+				display:none;
+			}
+			.atributos ul p{
+				display:inline-block;
+			}
+			.atributos ul p{
+				width:30vw;
+			}
+			#hidden{
+				display:none;
+			}
+			#player_num{
+				display:inline-block;
+			}
+			@media screen and (min-width: 70vh){
+				h4,p{
+					font-size:100%;
+				}
+				.pic{
+					width:80px;
+				}
+				.player span{
+					display:inline-block;
+					width:60px;
+					height:60px;
+					background-size:60px 60px;
+					text-align:center;
+				}
+				ul {
+					transform:translateX(-20px);
+				}
+				.atributos ul p{
+					width:15vw;
+				}
+				#players{
+					flex-direction:row;
+				}
+			}
+		</style>
+		<title>Dashboard</title>
+	</head>
+	<body>
+		<button id="showHidden" onclick="showHidden()">&darr;</button>
+		<div id="hidden">
+			<label>Numero de jgdrs:</label>
+			<p id="player_num"></p>
+			<br>
+			<button type="button" onclick="salvarPlayersSessao()">Salvar Jogadores(Sessao)</button>
+			<button type="button" onclick="salvarPlayersDB()">Salvar Jogadores(DataBase)</button>
+		</div>
+		
+		<div id="players">
+		</div>
+		<script src="main.js"  defer></script>
+	</body>
+</html>

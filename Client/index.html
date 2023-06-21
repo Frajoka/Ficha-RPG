@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8"/>
+		<link rel="shortcut icon" href="../assets/favicon-client.png" type="image/png"/>
+		<style>
+			*{
+				-webkit-user-select: none;
+			}
+			html{
+				max-width: 100%;
+				overflow-x: hidden;
+			}
+			ul {
+				list-style-type: none;
+				transform:translateX(-30px);
+			}
+			abbr{
+				cursor:pointer;
+			}
+			img{
+				-webkit-user-drag: none;
+				-webkit-user-select: none;
+			}
+			textarea{
+				border:none;
+				resize:none;
+			}
+			#filtro_de_tela{
+				display:inline-block;
+				position:absolute;
+				transform:translateY(-10vh);
+				top:0px;
+				left:0px;
+				background-color:black;
+				width:100vw;
+				height:102vh;
+				z-index:3000;
+				opacity:0.0;
+				pointer-events: none;
+			}
+			#change_filtro_tela{
+				display:inline-block;
+				background-color:transparent;
+				position:absolute;
+				top:20px;
+				left:62%;
+			}
+			#change_filtro_tela button{
+				border:none;
+				border-radius:50%;
+				background-color:transparent;
+				margin-left:80px;
+			}
+			#change_filtro_tela img{
+				width:20px;
+			}
+			#shower_filtro{
+				display:none;
+				width:100px;
+				height:20px;
+				border:1px solid #000;
+				border-radius:2px;
+				background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 100%);
+			}
+			#filtro_tela_slider{
+				display:none;
+				width:100px;
+			}
+			#info_img_div{
+				display:inline-block;
+			}
+			#info_img_div img{
+				display:block;
+				width:80px;
+				height:100px;
+				border:1px solid #eee;
+				border-radius:4px;
+			}
+			#info_img_div_input{
+				display:inline-block;
+				width:80px;
+				height:20px;
+				border:1px solid #000;
+				border-radius:2px;
+				-webkit-user-select: none;
+				text-align:center;
+				font-size:80%;
+			}
+			#info_text_div{
+				display:inline-block;
+				width:auto;
+			}
+			#combate_div span{
+				display:inline-block;
+				width:28vw;
+				height:28vw;
+				text-align:center;
+				background-size: 28vw 28vw;
+			}
+			#combate_div img{
+				width:100%;
+				height:100%;
+			}
+			.combate_text{
+				display:block;
+				font-family:"Lucida Console";
+				font-size:90%;
+				font-weight:bold;
+				margin-top:30%;
+				border-radius:30px;
+				background-color:#e1e1e0;
+				padding:2px 1px;
+			}
+			.stats_button{
+				width:100px;
+				border:none;
+				background-color:transparent;
+				border-radius:5px;
+				font-size:100%;
+			}
+			.stats_button:hover{
+				background-color:#eee;
+				opacity:0.5;
+			}
+			#stats_div p{
+				display:inline;
+				font-size:100%;
+			}
+			.stats_span{
+				display:none;
+				position:absolute;
+				z-index:2;
+				border-radius:10px;
+				border:1px solid #dddddd;
+				background-color:#eeeeee;
+				width:200px;
+				height:160px;
+			}
+			.stats_span ul{
+				transform:translateY(-10px);
+			}
+			.stats_span_skill_name{
+				display:inline-block;
+				width:120px;
+			}
+			#skills_for{
+				height:50px;
+			}
+			#skills_des{
+				height:115px;
+			}
+			#skills_con{
+				height:30px;
+			}
+			#skills_int{
+				height:140px;
+			}
+			#skills_sab{
+				height:122px;
+			}
+			#skills_car{
+				height:115px;
+			}
+			#anotas{
+				display:inline-block;
+				width:92%;
+				resize:none;
+				height:120px;
+				margin-top:0px;
+				margin-left:2.5%;
+				border:1px solid #000;
+				overflow-y:scroll;
+			}
+			#inventario_magias{
+				display:flex;
+				flex-direction:column;
+			}
+			#inventario_div{
+				width:100%;
+			}
+			#inventario_div h3{
+				display:inline;
+			}
+			#recover_button{
+				display:inline-block;
+				font-size:120%;
+				width:5vh;
+				height:5vh;
+				margin-left:2%;
+				border-radius:4px;
+				background-color:#eee;
+				border:1px solid #000;
+			}
+			#inventario{
+				margin-left:2%;
+				border:1px solid #000;
+			}
+			.item_img{
+				width:8vh;
+				height:8vh;
+				border:.5px solid #000;
+				border-radius:2px;
+			}
+			.item_text{
+				display:inline-block
+				width:98%;
+				height:8vh;
+				border-bottom:1px solid #000;
+			}
+			.close_button{
+				display:inline-block;
+				position:absolute;
+				left:90%;
+			}
+			.up_down{
+				display:inline-block;
+				width:8vw;
+				height:8.5vw;
+				transform:translateY(-35%);
+			}
+			.up_down_buttons{
+				display:block;
+				width:80%;
+				height:80%;
+			}
+			#magias_header{
+				display:flex;
+				flex-direction:row;
+				justify-content:space-between;
+			}
+			#magias_header_nome{
+				width:50%;
+			}
+			#magias_header_nome a{
+				text-decoration:none;
+				color:black;
+			}
+			#magias_div input[type="checkbox"],p{
+				display:inline;
+			}
+			#magias_div li h3{
+				display:inline;
+				margin-top:10%;
+			}
+			.magia_niveis{
+				margin-top:10%;
+			}
+			footer{
+				background-color:#eee;
+				margin:-5px;
+				width:96vw;
+				height:60px;
+				text-align:center;
+			}
+			@media screen and (min-width: 70vh){
+				h3{
+					font-size:150%;
+					margin-left:5%;
+				}
+				h2, h4, #inventario_div{
+					margin-left:5%;
+				}
+				ul {
+					transform:translateX(-20px);
+				}
+				footer{
+					margin-top:10%;
+				}
+				#filtro_de_tela{						
+					transform:translateY(-30px);
+					height:104.24vh;
+				}
+				#change_filtro_tela{
+					left:80%;
+				}
+				#info_img_div_input{
+					font-size:100%;
+				}
+				#info_text_div{
+					width:50%;
+				}
+				#combate_div{
+					margin-left:0px;
+				}
+				#combate_div span{
+					display:inline-block;
+					width:80px;
+					height:80px;
+					text-align:center;
+					background-size: 80px 80px;
+				}
+				#combate_div span:first-of-type{
+					margin-left:36%;
+				}
+				#stats_div{
+					display:inline-block;
+					width:45%;
+					margin-left:2.5%;
+				}
+				#skills_int{
+					height:150px;
+				}
+				#anotas_div{
+					display:inline-block;
+				}
+				#anotas{
+					font-size:125%;
+					width:45vw;
+					height:90px;
+					margin-left:2.5%;
+				}
+				#magias_div{
+					display:inline-block;
+					border-left:1px solid #000;
+					padding:0px 4px;
+					width:45%;
+				}
+				#magias_header{
+					width:100%;
+				}
+				#magias_header_nome{
+					width:45%;
+				}
+				#hr_removable{
+					display:none;
+				}
+				#inventario_magias{
+					flex-direction:row;
+					justify-content:space-between;
+				}
+				#inventario_div{
+					margin:0px;
+					width:45%;
+				}
+				.close_button{
+					transform:translateY(-0vh);
+				}
+				.up_down{
+					display:inline-block;
+					width:4vw;
+					height:3.6vw;
+				}
+				.up_down_buttons{
+					display:block;
+					width:80%;
+					height:80%;
+				}
+				#recover_button{
+					height:auto;
+				}
+			}
+		</style>
+		<title>Personagem</title>
+	</head>
+	<body>
+		<!--Filtro que deixa a tal mais escura-->
+		<div id="filtro_de_tela"></div>
+		
+		<!--Controles do filtro acima-->
+		<div id="change_filtro_tela">
+			<button type="button" onclick="showChangeFiltro()"><img src="../assets/colors.png"></button>
+			<br>
+			<span id="shower_filtro"></span>
+			<input id="filtro_tela_slider" type="range" min="0" step="0.01" max=".8" value="0" onchange="changeFiltro()"/>
+		</div>
+		
+		<!--Divisao com as infoemacoes do Jogador-->
+		<div id="info_div">
+			<div id="info_img_div">
+				<img>
+				<label id="info_img_div_input">
+					Trocar Foto
+					<input accept="image/*" style="display:none;" type="file" onchange="changeCharPic(event)"/>
+				</label>
+			</div>
+			<div id="info_text_div">
+				<h2 id="info_nome">Nome</h2>
+				<h4 id="info">Raca Origem Classe Nivel</h4>
+			</div>
+		</div>
+		<hr>
+		
+		<!--Divisao com as infomacoes uteis em batalha
+		Vida/Armadura/Movimento-->
+		<div id="combate_div">
+			<h3>Combate</h3>
+			<span style="background-image:url('../assets/heart.png')" onmousedown="beginHealDamage(event)" ontouchstart="beginHealDamage(event)" ontouchmove="healDamage(event)" ontouchend="endHealDamage()" onmouseup="endHealDamage()">
+				<p class="combate_text" id="vida">99/99</p>
+			</span>
+			<span style="background-image:url('../assets/shield.png')">
+				<p class="combate_text" id="armadura">99</p>
+			</span>
+			<span style="background-image:url('../assets/boot.png')">
+				<p class="combate_text" id="velocidade">99m(99q)</p>
+			</span>
+		</div>
+		<hr>
+		
+		<!--Atributos-->
+		<div id="stats_div">
+			<h3>Atributos</h3>
+			<ul>
+				<li>
+					<button class="stats_button" type="button">For&ccedil;a</button>
+					<p>10</p>
+				</li>
+				<li>
+					<button class="stats_button" type="button">Destreza</button>
+					<p>10</p>
+				</li>
+				<li>
+					<button class="stats_button" type="button">Constitui&ccedil;&atilde;o</button>
+					<p>10</p>
+				</li>
+				<li>
+					<button class="stats_button" type="button">Intelig&ecirc;ncia</button>
+					<p>10</p>
+				</li>
+				<li>
+					<button class="stats_button" type="button">Sabedoria</button>
+					<p>10</p>
+				</li>
+				<li>
+					<button class="stats_button" type="button">Carisma</button>
+					<p>10</p>
+				</li>
+			</ul>
+			
+			<!--Pericias de cada atributo-->
+			<span class="stats_span" id="skills_for">
+				<ul>
+					<li><span class="stats_span_skill_name">Atletismo</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Resist&ecirc;ncia</span><p>10</p></li>
+				</ul>
+			</span>
+			<span class="stats_span" id="skills_des">
+				<ul>
+					<li><span class="stats_span_skill_name">Acrobacia</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Furtividade</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Iniciativa</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Prestidigita&ccedil;&atilde;o</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Reflexos</span><p>10</p></li>
+				</ul>
+			</span>
+			<span class="stats_span" id="skills_con">
+				<ul>
+					<li><span class="stats_span_skill_name">Fortitude</span><p>10</p></li>
+				</ul>
+			</span>
+			<span class="stats_span" id="skills_int">
+				<ul>
+					<li><span class="stats_span_skill_name">Arcana</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Conhecimentos</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Hist&oacute;ria</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Investiga&ccedil;&atilde;o</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Medicina</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Natureza</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Religi&atilde;o</span><p>10</p></li>
+				</ul>
+			</span>
+			<span class="stats_span" id="skills_sab">
+				<ul>
+					<li><span class="stats_span_skill_name">Adestrar Animais</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Intui&ccedil;&atilde;o</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Percep&ccedil;&atilde;o</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Sobreviv&ecirc;ncia</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Vontade</span><p>10</p></li>
+				</ul>
+			</span>
+			<span class="stats_span" id="skills_car">
+				<ul>
+					<li><span class="stats_span_skill_name">Atua&ccedil;&atilde;o</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Engana&ccedil;&atilde;o</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Intimida&ccedil;&atilde;o</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Malandragem</span><p>10</p></li>
+					<li><span class="stats_span_skill_name">Persuas&atilde;o</span><p>10</p></li>
+				</ul>
+			</span>
+		</div>
+		
+		<!--Divisao de anotacoes-->
+		<div id="anotas_div">
+			<h3>Anota&ccedil;&otilde;es</h3>
+			<textarea onchange="postAnotas(event)" id="anotas"></textarea>
+		</div>
+		<hr>
+		
+		<!--Dividsao que engloba inventario e magias-->
+		<div id="inventario_magias">
+			<div id="inventario_div">
+				<h3>Invent&aacute;rio</h3>
+				<button id="recover_button" onclick="recoverItem()">&circlearrowleft;</button>
+				<button id="recover_button" onclick="addItem()">+</button>
+				<ul id="inventario">
+					<li>
+						<img>
+						<p></p>
+					</li>
+				</ul>
+			</div>
+			
+			<!--Esta <hr> nao aparece na versao de celular-->
+			<hr id="hr_removable">
+			<div id="magias_div">
+				<div id="magias_header">
+					<h3 id="magias_header_nome"><a href="https://avribacki.gitlab.io/magias5e/" target="_blank" rel="nofollow">Magias</a></h3>
+					<h3>ATK:</h3>
+					<h3>99</h3>
+					<h3>CD:</h3>
+					<h3>99</h3>
+				</div>
+				<ul id="magia_levels">
+				</ul>
+			</div>
+		</div>
+		<!--Rodape simple-->
+		<footer>
+			<br>
+			<p>Programado, Idealizado e Mantido por <abbr title="Francisco Jos&eacute;">Mim</abbr></p>
+		</footer>
+		<script src="main.js"></script>
+	</body>
+</html>
